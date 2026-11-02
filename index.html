@@ -275,4 +275,117 @@ document.addEventListener("DOMContentLoaded", () => {
     const emp = $("employee").value.trim();
     const date = $("date").value;
     const shift = $("shift").value;
-    if(!
+    if(!emp || !date){setStatus("직원명과 날짜를 입력해주세요.");return}
+    
+    const { data, error } = await supabaseClient.from('gym_checklist_records')
+      .select('*')
+      .eq('employee', emp)
+      .eq('work_date', date)
+      .eq('shift', shift)
+      .order('id', { ascending: false })
+      .limit(1);
+      
+    if(error || !data || data.length === 0){
+      setStatus("해당 기록이 없거나 불러오지 못했습니다.");
+      return;
+    }
+    const r = data[0];
+    $("employee").value=r.employee;
+    $("date").value=r.work_date;
+    $("shift").value=r.shift;
+    $("notes").value=r.notes||"";
+    render();
+    document.querySelectorAll('#checklist input').forEach(c=>{
+      if(r.checks && r.checks[c.dataset.id]){
+        c.checked=true;
+        c.closest(".item").classList.add("done");
+      }
+    });
+    progress();
+    setStatus("기록을 불러왔습니다.");
+  }
+
+  async function searchRecords(){
+    if(!supabaseClient) return;
+    const name=$("searchName").value.trim();
+    const date=$("searchDate").value;
+    
+    let query = supabaseClient.from('gym_checklist_records').select('*').order('work_date', { ascending: false });
+    if(name) query = query.ilike('employee', `%${name}%`);
+    if(date) query = query.eq('work_date', date);
+    
+    const { data: rs, error } = await query;
+    const root=$("records");
+    root.innerHTML="";
+    
+    if(error || !rs || !rs.length){
+      root.textContent="검색 결과가 없습니다.";
+      return;
+    }
+    rs.forEach(r=>{
+      const row=document.createElement("div");row.className="record";
+      const done=r.checks?Object.values(r.checks).filter(Boolean).length:0, total=r.checks?Object.keys(r.checks).length:0;
+      const info=document.createElement("div");
+      info.innerHTML="<strong>"+esc(r.work_date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";
+      const b=document.createElement("button");b.className="btn";b.textContent="불러오기";
+      b.onclick=()=>{
+        $("employee").value=r.employee;
+        $("date").value=r.work_date;
+        $("shift").value=r.shift;
+        $("notes").value=r.notes||"";
+        render();
+        document.querySelectorAll('#checklist input').forEach(c=>{
+          if(r.checks && r.checks[c.dataset.id]){
+            c.checked=true;
+            c.closest(".item").classList.add("done");
+          }
+        });
+        progress();
+        setStatus("기록을 불러왔습니다.");
+      };
+      row.append(info,b);root.appendChild(row);
+    });
+  }
+
+  function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+  async function exportCSV(){
+    if(!supabaseClient){setStatus("Supabase 설정이 필요합니다.");return}
+    const { data: rs, error } = await supabaseClient.from('gym_checklist_records').select('*');
+    if(error || !rs || !rs.length){setStatus("내보낼 기록이 없습니다.");return}
+    
+    const rows=[["날짜","직원명","근무구분","특이사항","완료항목수"]];
+    rs.forEach(r=>{
+      const done=r.checks?Object.values(r.checks).filter(Boolean).length:0;
+      rows.push([r.work_date,r.employee,r.shift,r.notes,done+"개"]);
+    });
+    
+    const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+    const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+    a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href);
+  }
+
+  $("save").onclick=save;
+  $("load").onclick=load;
+  $("csv").onclick=exportCSV;
+  $("reset").onclick=()=>{
+    if(confirm("현재 체크만 초기화할까요?")){
+      document.querySelectorAll('#checklist input').forEach(c=>{
+        c.checked=false;
+        c.closest(".item").classList.remove("done");
+      });
+      progress();
+      setStatus("체크를 초기화했습니다.");
+    }
+  };
+  $("search").onclick=searchRecords;
+  $("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
+  
+  // 근무 구분 변경 시 체크리스트 목록 즉시 갱신
+  $("shift").onchange=render;
+
+  render();
+});
+</script>
+</body>
+</html>
