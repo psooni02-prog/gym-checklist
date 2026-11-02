@@ -11,7 +11,7 @@
 header{background:linear-gradient(135deg,#111214,#292c31);color:#fff;padding:28px max(18px,calc((100% - 940px)/2));border-bottom:1px solid #383b40}h1{font-size:25px;letter-spacing:-.8px;margin:0 0 7px;font-weight:750}header p{margin:0;color:#c3c6cc;font-size:14px}
 main{max-width:940px;margin:auto;padding:18px;display:grid;gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 3px 12px #17191d05}h2{font-size:17px;letter-spacing:-.4px;margin:0 0 15px;font-weight:750}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}label.field{font-size:12px;color:#656a73;display:grid;gap:7px;font-weight:650}input,select,textarea{font:inherit;padding:11px 12px;border:1px solid #d9dce1;border-radius:9px;width:100%;background:#fff;color:var(--ink);outline:none}input:focus,select:focus{border-color:#555b65;box-shadow:0 0 0 3px #24272d12}
 .progressText{font-size:13px;text-align:right;color:#4e535c;margin-top:16px;font-weight:700}.progress{height:9px;background:var(--track);border-radius:20px;overflow:hidden;margin-top:8px}.progress div{height:100%;width:0;background:linear-gradient(90deg,#24272d,#62666f);border-radius:20px;transition:width .2s}.completion{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:11px 13px;background:#f5f6f7;border:1px solid #e6e7ea;border-radius:10px;font-size:13px;color:#555a63}.completion strong{font-size:15px;color:#17191d}.completion.done{background:#eceef0;border-color:#cfd2d7}.completion .percent{font-size:22px;font-weight:800;letter-spacing:-.8px;color:#17191d}
-.section{border:1px solid var(--line);border-radius:11px;margin:10px 0;overflow:hidden;background:#fff}.section[hidden]{display:none}.section summary{font-weight:750;font-size:14px;padding:14px;cursor:pointer;background:#f7f8f9;list-style-position:inside}.items{padding:0 14px}.item{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-top:1px solid #eef0f2;font-size:14px;line-height:1.5;cursor:pointer}.item input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:#25282e;cursor:pointer}.item small{display:block;color:#777c85;margin-top:4px;font-size:12px}.item.done span{text-decoration:line-through;color:#8b9098}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #dfe1e5;border-radius:9px;padding:10px 13px;font-weight:700;font-size:13px;cursor:pointer;background:#f1f2f4;color:#24272d;transition:background .15s}.btn:hover{background:#e4e6e9}.btn.primary{background:#202329;color:#fff;border-color:#202329}.btn.primary:hover{background:#373a41}.status{font-size:13px;color:#666b74;margin-top:10px;line-height:1.5}.record{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:10px;margin:8px 0;align-items:center}.record small{display:block;color:#777c85;margin-top:5px}.warning{padding:12px;background:#f5f5f6;border:1px solid #e3e4e7;border-radius:9px;font-size:12px;color:#555a63;line-height:1.6;margin-bottom:12px}.shift-pill{display:inline-block;margin-top:14px;padding:5px 9px;background:#383b41;color:#fff;border-radius:6px;font-size:11px;font-weight:750;letter-spacing:.5px}
+.section{border:1px solid var(--line);border-radius:11px;margin:10px 0;overflow:hidden;background:#fff}.section[hidden]{display:none !important}.section summary{font-weight:750;font-size:14px;padding:14px;cursor:pointer;background:#f7f8f9;list-style-position:inside}.items{padding:0 14px}.item{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-top:1px solid #eef0f2;font-size:14px;line-height:1.5;cursor:pointer}.item input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:#25282e;cursor:pointer}.item small{display:block;color:#777c85;margin-top:4px;font-size:12px}.item.done span{text-decoration:line-through;color:#8b9098}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #dfe1e5;border-radius:9px;padding:10px 13px;font-weight:700;font-size:13px;cursor:pointer;background:#f1f2f4;color:#24272d;transition:background .15s}.btn:hover{background:#e4e6e9}.btn.primary{background:#202329;color:#fff;border-color:#202329}.btn.primary:hover{background:#373a41}.status{font-size:13px;color:#666b74;margin-top:10px;line-height:1.5}.record{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:10px;margin:8px 0;align-items:center}.record small{display:block;color:#777c85;margin-top:5px}.warning{padding:12px;background:#f5f5f6;border:1px solid #e3e4e7;border-radius:9px;font-size:12px;color:#555a63;line-height:1.6;margin-bottom:12px}.shift-pill{display:inline-block;margin-top:14px;padding:5px 9px;background:#383b41;color:#fff;border-radius:6px;font-size:11px;font-weight:750;letter-spacing:.5px}
 @media(max-width:580px){.fields{grid-template-columns:1fr}main{padding:10px}.card{padding:15px}.record{align-items:flex-start}header{padding-top:23px;padding-bottom:23px}h1{font-size:22px}}
 </style>
 </head>
@@ -103,7 +103,7 @@ $("date").value=localToday();
 function render(){
  const root=$("checklist");root.innerHTML="";
  sections.forEach((sec,si)=>{
-  const d=document.createElement("details");d.className="section";d.open=si===0;
+  const d=document.createElement("details");d.className="section";
   const sum=document.createElement("summary");sum.textContent=sec[0]+" · 0/"+sec[1].length;d.appendChild(sum);
   const items=document.createElement("div");items.className="items";
   sec[1].forEach((item,ii)=>{
@@ -116,11 +116,24 @@ function render(){
   });
   d.appendChild(items);root.appendChild(d);
  });
- progress();
+ applyShift();
 }
 
-function activeSection(sec){const shift=$("shift").value;if(shift==="오픈")return sec[0].startsWith("오픈");if(shift==="미들")return sec[0].startsWith("미들");return sec[0].startsWith("마감")}
-function applyShift(){const shift=$("shift").value;document.querySelectorAll(".section").forEach((d,i)=>{d.hidden=!activeSection(sections[i]);d.open=activeSection(sections[i])});$("shiftPill").textContent=shift+" 근무";progress()}
+function activeSection(secTitle){
+ const shift=$("shift").value;
+ return secTitle.startsWith(shift);
+}
+
+function applyShift(){
+ const shift=$("shift").value;
+ document.querySelectorAll("#checklist .section").forEach((d,i)=>{
+  const isActive = activeSection(sections[i][0]);
+  d.hidden = !isActive;
+  d.open = isActive;
+ });
+ $("shiftPill").textContent=shift+" 근무";
+ progress();
+}
 
 function progress(){
  const visible=[...document.querySelectorAll('#checklist .section:not([hidden]) input[type=checkbox]')],done=visible.filter(x=>x.checked).length,total=visible.length,pct=total?Math.round(done/total*100):0;
@@ -130,7 +143,7 @@ function progress(){
  const complete=total>0&&done===total;
  $("completion").classList.toggle("done",complete);
  $("completionText").textContent=complete?"모든 체크리스트를 완료했습니다. 저장하기를 눌러 기록을 남겨주세요.":"현재 근무의 체크리스트 완료율";
- [...document.querySelectorAll(".section")].forEach((d,i)=>{
+ [...document.querySelectorAll("#checklist .section")].forEach((d,i)=>{
   const boxes=[...d.querySelectorAll("input")];
   d.querySelector("summary").textContent=sections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`;
  });
@@ -183,8 +196,8 @@ async function load(){
  $("date").value=r.work_date;
  $("shift").value=r.shift;
  $("notes").value=r.notes||"";
- document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});
- progress();
+ document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!(r.checks&&r.checks[c.dataset.id]);c.closest(".item").classList.toggle("done",c.checked)});
+ applyShift();
  setStatus("기록을 불러왔습니다.");
 }
 
@@ -207,13 +220,14 @@ async function searchRecords(){
  }
  rs.forEach(r=>{
   const row=document.createElement("div");row.className="record";
-  const info=document.createElement("div"), done=Object.values(r.checks).filter(Boolean).length, total=Object.keys(r.checks).length;
+  const done=r.checks?Object.values(r.checks).filter(Boolean).length:0, total=r.checks?Object.keys(r.checks).length:0;
+  const info=document.createElement("div");
   info.innerHTML="<strong>"+esc(r.work_date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";
   const b=document.createElement("button");b.className="btn";b.textContent="불러오기";
   b.onclick=()=>{
    $("employee").value=r.employee;$("date").value=r.work_date;$("shift").value=r.shift;$("notes").value=r.notes||"";
-   document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});
-   progress();setStatus("기록을 불러왔습니다.");
+   document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!(r.checks&&r.checks[c.dataset.id]);c.closest(".item").classList.toggle("done",c.checked)});
+   applyShift();setStatus("기록을 불러왔습니다.");
   };
   row.append(info,b);root.appendChild(row);
  });
@@ -227,7 +241,7 @@ async function exportCSV(){
  if(error || !rs || !rs.length){setStatus("내보낼 기록이 없습니다.");return}
  const tasks=sections.flatMap((s,si)=>s[1].map((t,ii)=>({id:si+"-"+ii,label:s[0]+" - "+t[0]})));
  const rows=[["날짜","직원명","근무구분","특이사항",...tasks.map(t=>t.label)]];
- rs.forEach(r=>rows.push([r.work_date,r.employee,r.shift,r.notes,...tasks.map(t=>r.checks[t.id]?"완료":"미완료")]));
+ rs.forEach(r=>rows.push([r.work_date,r.employee,r.shift,r.notes,...tasks.map(t=>(r.checks&&r.checks[t.id])?"완료":"미완료")]));
  const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
  a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href);
@@ -242,7 +256,6 @@ $("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRe
 $("shift").onchange=applyShift;
 
 render();
-applyShift();
 </script>
 </body>
 </html>
