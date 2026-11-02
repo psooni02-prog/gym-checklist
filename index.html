@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>직원 업무 체크리스트</title>
+<title>헬스장 직원 체크리스트</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--ink:#17191d;--muted:#737780;--line:#e4e6e9;--paper:#f4f5f6;--card:#fff;--dark:#17191d;--soft:#f0f1f3;--track:#e8e9ec;--accent:#24272d}
@@ -71,280 +71,208 @@ main{max-width:940px;margin:auto;padding:18px;display:grid;gap:15px}.card{backgr
 </main>
 
 <script>
-const SUPABASE_URL = "https://bwaskqdszrossgvizijq.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YXNrcWRzenJvc3Nndml6aWpxIക്കാരിQiOiJhbm9uIiwiaWF0IjoxNzkyNjYyMDg1LCJleHAiOjIxMDgyMzgwODV9.v4w4fD6x0kcSiFlLm92eIGgUdtUD0M_To2ooAygWqwg";
+document.addEventListener("DOMContentLoaded", () => {
+  const SUPABASE_URL = "https://bwaskqdszrossgvizijq.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YXNrcWRzenJvc3Nndml6aWpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NjIwODUsImV4cCI6MjEwODIzODA4NX0.v4w4fD6x0kcSiFlLm92eIGgUdtUD0M_To2ooAygWqwg";
 
-// 중복 선언 방지를 위한 안전한 클라이언트 생성
-window.supabaseClient = window.supabaseClient || (window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
-
-const checklistData = {
-  "오픈": [
-    ["출근 직후 업무", [
-      ["출근 완료 후 대표님께 보고하기"],
-      ["[기본 정리] 필요시 직원용 옷 정리하기"],
-      ["[기본 정리] 실내화 정리 및 분배하기"],
-      ["[기본 정리] 정수기 및 주변 청결 상태 확인하기"],
-      ["[기본 정리] 종이컵, 휴지 등 비품 확인 및 보충하기"],
-      ["[기본 정리] 정수기 주변 쓰레기 정리하기"],
-      ["[화장실 청소] 소변기 물 내리고 청결 상태 확인하기"],
-      ["[화장실 청소] 변기 및 세면대 솔로 깨끗하게 닦기"],
-      ["[화장실 청소] 바닥에 세제를 사용하여 물청소하기"],
-      ["[화장실 청소] 청소기와 쓰레기통을 통행에 방해되지 않도록 정리하기"],
-      ["[탈의실 및 운동용품] 남녀 탈의실 각각 확인 후 정리하기"],
-      ["[탈의실 및 운동용품] 옷, 수건, 바닥 등 전체적인 정리 상태 확인하기"],
-      ["[탈의실 및 운동용품] 정수기 옆 케틀벨 및 덤벨 정리하기"],
-      ["[탈의실 및 운동용품] 3kg 덤벨 위치 확인 및 정리하기"],
-      ["[탈의실 및 운동용품] 폼롤러 및 운동 매트 제자리에 정리하기"],
-      ["[걸레 청소] 정문 및 후문 신발장 닦기"],
-      ["[걸레 청소] 남녀 가방 보관함 닦기"],
-      ["[걸레 청소] 런닝머신 상단 및 하단 닦기"],
-      ["[걸레 청소] 런닝머신 젖은 걸레로 닦은 후 마른 수건으로 마무리하기"],
-      ["[걸레 청소] 천국의 계단 전체적으로 닦기"],
-      ["[바닥 정리] 바닥에 보이는 쓰레기 줍기"],
-      ["[바닥 정리] 센터 전체적으로 정리 상태 확인하기"]
-    ]]
-  ],
-  "미들": [
-    ["근무 중 수시 점검 업무", [
-      ["[청결 및 시설] 천국의 계단 및 런닝머신 땀 자국 수시로 닦기"],
-      ["[청결 및 시설] 유산소 운동기구 사용 후 TV 전원 끄기"],
-      ["[청결 및 시설] 사용한 기구 및 머신 정리하기"],
-      ["[청결 및 시설] 틀어져 있는 기구는 원래 위치로 돌려놓기"],
-      ["[청결 및 시설] 원판과 덤벨 제자리에 정리하기"],
-      ["[청결 및 시설] 카운터 앞 레그프레스 원판은 양쪽에 1개씩만 남기고 정리하기"],
-      ["[청결 및 시설] 거울에 묻은 손자국 및 얼룩 닦기"],
-      ["[청결 및 시설] 인포메이션 주변 항상 깔끔하게 유지하기"],
-      ["[청결 및 시설] 바닥에 떨어진 쓰레기 수시로 줍기"],
-      ["[고객 응대 및 운영] 네이버 톡톡 문의 확인 및 답변하기"],
-      ["[고객 응대 및 운영] 정수기 물통 확인 및 비워주기"],
-      ["[고객 응대 및 운영] 종이컵, 휴지 등 소모품 확인하기"],
-      ["[고객 응대 및 운영] 신발장에 장기간 보관 중인 신발 확인 및 대표님 보고하기"],
-      ["[홍보 업무] 전봇대 족자 등 홍보물 제작 및 관리하기"],
-      ["[홍보 업무] 블로그 포스팅 작성하기"],
-      ["[홍보 업무] 네이버 클립 등 온라인 홍보 콘텐츠 제작하기"]
-    ]]
-  ],
-  "마감": [
-    ["화장실 청소", [
-      ["변기, 소변기, 세면대에 PB-1을 뿌리고 솔로 깨끗하게 닦기"],
-      ["세척 후 깨끗한 물로 충분히 헹구기"],
-      ["화장실 거울 깨끗하게 닦기"],
-      ["바닥 빗자루로 쓸기"],
-      ["바닥은 세제를 이용해 물청소까지 진행하기"],
-      ["쓰레기통 비우기"],
-      ["청소기 및 쓰레기통 제자리 정리하기"]
-    ]],
-    ["헬스장 내부 청소 및 정리", [
-      ["기구 및 머신 전체적으로 닦기"],
-      ["원판과 덤벨 제자리에 정리하기"],
-      ["청소기로 바닥 전체 청소하기"],
-      ["정수기 및 주변 청소하기"],
-      ["정수기 물통 비우기"],
-      ["쓰레기통 확인 후 비우기"],
-      ["신발장 실내화 개수 및 배열 정리하기"],
-      ["직원 및 회원 옷, 수건 정리하기"],
-      ["부족한 수건 및 비품 채워놓기"]
-    ]],
-    ["샤워실 청소", [
-      ["샤워실 전체에 PB-1을 뿌리고 솔로 깨끗하게 닦기"],
-      ["샤워실 벽면의 누런 물때 꼼꼼하게 제거하기"],
-      ["거울 깨끗하게 닦기"],
-      ["배수구 주변을 솔로 돌려가며 깨끗하게 청소하기"],
-      ["솔 뒷부분을 이용해 바닥 물기 제거하기"],
-      ["샤워실 쓰레기통 비우기"],
-      ["샤워실 전체 청소 상태 확인하기"]
-    ]],
-    ["퇴근 전 마감 업무", [
-      ["청소기로 센터 바닥 전체 청소하기"],
-      ["옷 및 수건 등 세탁물 보라색 포대에 담기"],
-      ["샤워실 앞 물기 제거 발판 교체하기"],
-      ["음악 소리 7~9%로 조절하기"],
-      ["센터 전체 청소 상태 최종 점검하기"],
-      ["환풍기 켜지 않기"],
-      ["화장실 포함 각 구역별 조명 소등하기"],
-      ["정문 출입문 시건하기"],
-      ["각 구역별 청소 완료 사진 촬영하기"],
-      ["청소 상태 및 특이사항 대표님께 보고하기"],
-      ["모든 업무 완료 후 퇴근하기"]
-    ]]
-  ]
-};
-
-const $=id=>document.getElementById(id);
-function localToday(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
-$("date").value=localToday();
-
-function render(){
- const root=$("checklist");
- root.innerHTML="";
- 
- const currentShift = $("shift").value || "오픈";
- const shiftSections = checklistData[currentShift] || checklistData["오픈"];
-
- shiftSections.forEach((sec, si)=>{
-  const d=document.createElement("details");
-  d.className="section";
-  d.open=true;
-  
-  const sum=document.createElement("summary");
-  sum.textContent=sec[0]+" · 0/"+sec[1].length;
-  d.appendChild(sum);
-  
-  const items=document.createElement("div");
-  items.className="items";
-  
-  sec[1].forEach((item, ii)=>{
-   const lab=document.createElement("label");
-   lab.className="item";
-   const cb=document.createElement("input");
-   cb.type="checkbox";
-   cb.dataset.id=si+"-"+ii;
-   const span=document.createElement("span");
-   span.textContent=item[0];
-   
-   cb.addEventListener("change",()=>{
-     lab.classList.toggle("done",cb.checked);
-     progress();
-   });
-   
-   lab.append(cb,span);
-   items.appendChild(lab);
-  });
-  
-  d.appendChild(items);
-  root.appendChild(d);
- });
- 
- $("shiftPill").textContent=currentShift+" 근무";
- progress();
-}
-
-function progress(){
- const visible=[...document.querySelectorAll('#checklist input[type=checkbox]')];
- const done=visible.filter(x=>x.checked).length;
- const total=visible.length;
- const pct=total?Math.round(done/total*100):0;
-
- $("progressText").textContent=`현재 ${$("shift").value} 근무 · ${done} / ${total}개 완료 (${pct}%)`;
- $("progressBar").style.width=pct+"%";
- $("completionPercent").textContent=pct+"%";
- 
- const complete=total>0&&done===total;
- $("completion").classList.toggle("done",complete);
- $("completionText").textContent=complete?"모든 체크리스트를 완료했습니다. 저장하기를 눌러 기록을 남겨주세요.":"현재 근무의 체크리스트 완료율";
- 
- [...document.querySelectorAll("#checklist .section")].forEach((d,i)=>{
-  const boxes=[...d.querySelectorAll("input")];
-  const shiftSections = checklistData[$("shift").value] || checklistData["오픈"];
-  if(shiftSections[i]){
-   d.querySelector("summary").textContent=shiftSections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`;
-  }
- });
-}
-
-function current(){
- const checks={};
- document.querySelectorAll('#checklist input').forEach(c=>checks[c.dataset.id]=c.checked);
- return {employee:$("employee").value.trim(),work_date:$("date").value,shift:$("shift").value,notes:$("notes").value,checks,updated_at:new Date().toISOString()};
-}
-
-function setStatus(s){$("status").textContent=s}
-
-async function save(){
- if(!window.supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
- const r=current();
- if(!r.employee||!r.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}
- setStatus("클라우드에 저장 중...");
- const { error } = await window.supabaseClient.from('gym_checklist_records').insert([r]);
- if(error){
-  console.error(error);
-  setStatus("저장 실패: " + error.message);
- } else {
-  setStatus("클라우드 DB 저장 완료!");
-  searchRecords();
- }
-}
-
-async function load(){
- if(!window.supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
- const emp = $("employee").value.trim();
- const date = $("date").value;
- const shift = $("shift").value;
- if(!emp || !date){setStatus("직원명과 날짜를 입력해주세요.");return}
- 
- const { data, error } = await window.supabaseClient.from('gym_checklist_records')
-   .select('*')
-   .eq('employee', emp)
-   .eq('work_date', date)
-   .eq('shift', shift)
-   .order('id', { ascending: false })
-   .limit(1);
-   
- if(error || !data || data.length === 0){
-  setStatus("해당 기록이 없거나 불러오지 못했습니다.");
-  return;
- }
- const r = data[0];
- $("employee").value=r.employee;
- $("date").value=r.work_date;
- $("shift").value=r.shift;
- $("notes").value=r.notes||"";
- render();
- document.querySelectorAll('#checklist input').forEach(c=>{
-  if(r.checks && r.checks[c.dataset.id]){
-   c.checked=true;
-   c.closest(".item").classList.add("done");
-  }
- });
- progress();
- setStatus("기록을 불러왔습니다.");
-}
-
-async function searchRecords(){
- if(!window.supabaseClient) return;
- const name=$("searchName").value.trim();
- const date=$("searchDate").value;
- 
- let query = window.supabaseClient.from('gym_checklist_records').select('*').order('work_date', { ascending: false });
- if(name) query = query.ilike('employee', `%${name}%`);
- if(date) query = query.eq('work_date', date);
- 
- const { data: rs, error } = await query;
- const root=$("records");
- root.innerHTML="";
- 
- if(error || !rs || !rs.length){
-  root.textContent="검색 결과가 없습니다.";
-  return;
- }
- rs.forEach(r=>{
-  const row=document.createElement("div");row.className="record";
-  const done=r.checks?Object.values(r.checks).filter(Boolean).length:0, total=r.checks?Object.keys(r.checks).length:0;
-  const info=document.createElement("div");
-  info.innerHTML="<strong>"+esc(r.work_date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";
-  const b=document.createElement("button");b.className="btn";b.textContent="불러오기";
-  b.onclick=()=>{
-   $("employee").value=r.employee;
-   $("date").value=r.work_date;
-   $("shift").value=r.shift;
-   $("notes").value=r.notes||"";
-   render();
-   document.querySelectorAll('#checklist input').forEach(c=>{
-    if(r.checks && r.checks[c.dataset.id]){
-     c.checked=true;
-     c.closest(".item").classList.add("done");
+  let supabaseClient = null;
+  try {
+    if (window.supabase) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     }
-   });
-   progress();
-   setStatus("기록을 불러왔습니다.");
+  } catch(e) { console.error(e); }
+
+  const checklistData = {
+    "오픈": [
+      ["출근 직후 업무", [
+        ["출근 완료 후 대표님께 보고하기"],
+        ["[기본 정리] 필요시 직원용 옷 정리하기"],
+        ["[기본 정리] 실내화 정리 및 분배하기"],
+        ["[기본 정리] 정수기 및 주변 청결 상태 확인하기"],
+        ["[기본 정리] 종이컵, 휴지 등 비품 확인 및 보충하기"],
+        ["[기본 정리] 정수기 주변 쓰레기 정리하기"],
+        ["[화장실 청소] 소변기 물 내리고 청결 상태 확인하기"],
+        ["[화장실 청소] 변기 및 세면대 솔로 깨끗하게 닦기"],
+        ["[화장실 청소] 바닥에 세제를 사용하여 물청소하기"],
+        ["[화장실 청소] 청소기와 쓰레기통을 통행에 방해되지 않도록 정리하기"],
+        ["[탈의실 및 운동용품] 남녀 탈의실 각각 확인 후 정리하기"],
+        ["[탈의실 및 운동용품] 옷, 수건, 바닥 등 전체적인 정리 상태 확인하기"],
+        ["[탈의실 및 운동용품] 정수기 옆 케틀벨 및 덤벨 정리하기"],
+        ["[탈의실 및 운동용품] 3kg 덤벨 위치 확인 및 정리하기"],
+        ["[탈의실 및 운동용품] 폼롤러 및 운동 매트 제자리에 정리하기"],
+        ["[걸레 청소] 정문 및 후문 신발장 닦기"],
+        ["[걸레 청소] 남녀 가방 보관함 닦기"],
+        ["[걸레 청소] 런닝머신 상단 및 하단 닦기"],
+        ["[걸레 청소] 런닝머신 젖은 걸레로 닦은 후 마른 수건으로 마무리하기"],
+        ["[걸레 청소] 천국의 계단 전체적으로 닦기"],
+        ["[바닥 정리] 바닥에 보이는 쓰레기 줍기"],
+        ["[바닥 정리] 센터 전체적으로 정리 상태 확인하기"]
+      ]]
+    ],
+    "미들": [
+      ["근무 중 수시 점검 업무", [
+        ["[청결 및 시설] 천국의 계단 및 런닝머신 땀 자국 수시로 닦기"],
+        ["[청결 및 시설] 유산소 운동기구 사용 후 TV 전원 끄기"],
+        ["[청결 및 시설] 사용한 기구 및 머신 정리하기"],
+        ["[청결 및 시설] 틀어져 있는 기구는 원래 위치로 돌려놓기"],
+        ["[청결 및 시설] 원판과 덤벨 제자리에 정리하기"],
+        ["[청결 및 시설] 카운터 앞 레그프레스 원판은 양쪽에 1개씩만 남기고 정리하기"],
+        ["[청결 및 시설] 거울에 묻은 손자국 및 얼룩 닦기"],
+        ["[청결 및 시설] 인포메이션 주변 항상 깔끔하게 유지하기"],
+        ["[청결 및 시설] 바닥에 떨어진 쓰레기 수시로 줍기"],
+        ["[고객 응대 및 운영] 네이버 톡톡 문의 확인 및 답변하기"],
+        ["[고객 응대 및 운영] 정수기 물통 확인 및 비워주기"],
+        ["[고객 응대 및 운영] 종이컵, 휴지 등 소모품 확인하기"],
+        ["[고객 응대 및 운영] 신발장에 장기간 보관 중인 신발 확인 및 대표님 보고하기"],
+        ["[홍보 업무] 전봇대 족자 등 홍보물 제작 및 관리하기"],
+        ["[홍보 업무] 블로그 포스팅 작성하기"],
+        ["[홍보 업무] 네이버 클립 등 온라인 홍보 콘텐츠 제작하기"]
+      ]]
+    ],
+    "마감": [
+      ["화장실 청소", [
+        ["변기, 소변기, 세면대에 PB-1을 뿌리고 솔로 깨끗하게 닦기"],
+        ["세척 후 깨끗한 물로 충분히 헹구기"],
+        ["화장실 거울 깨끗하게 닦기"],
+        ["바닥 빗자루로 쓸기"],
+        ["바닥은 세제를 이용해 물청소까지 진행하기"],
+        ["쓰레기통 비우기"],
+        ["청소기 및 쓰레기통 제자리 정리하기"]
+      ]],
+      ["헬스장 내부 청소 및 정리", [
+        ["기구 및 머신 전체적으로 닦기"],
+        ["원판과 덤벨 제자리에 정리하기"],
+        ["청소기로 바닥 전체 청소하기"],
+        ["정수기 및 주변 청소하기"],
+        ["정수기 물통 비우기"],
+        ["쓰레기통 확인 후 비우기"],
+        ["신발장 실내화 개수 및 배열 정리하기"],
+        ["직원 및 회원 옷, 수건 정리하기"],
+        ["부족한 수건 및 비품 채워놓기"]
+      ]],
+      ["샤워실 청소", [
+        ["샤워실 전체에 PB-1을 뿌리고 솔로 깨끗하게 닦기"],
+        ["샤워실 벽면의 누런 물때 꼼꼼하게 제거하기"],
+        ["거울 깨끗하게 닦기"],
+        ["배수구 주변을 솔로 돌려가며 깨끗하게 청소하기"],
+        ["솔 뒷부분을 이용해 바닥 물기 제거하기"],
+        ["샤워실 쓰레기통 비우기"],
+        ["샤워실 전체 청소 상태 확인하기"]
+      ]],
+      ["퇴근 전 마감 업무", [
+        ["청소기로 센터 바닥 전체 청소하기"],
+        ["옷 및 수건 등 세탁물 보라색 포대에 담기"],
+        ["샤워실 앞 물기 제거 발판 교체하기"],
+        ["음악 소리 7~9%로 조절하기"],
+        ["센터 전체 청소 상태 최종 점검하기"],
+        ["환풍기 켜지 않기"],
+        ["화장실 포함 각 구역별 조명 소등하기"],
+        ["정문 출입문 시건하기"],
+        ["각 구역별 청소 완료 사진 촬영하기"],
+        ["청소 상태 및 특이사항 대표님께 보고하기"],
+        ["모든 업무 완료 후 퇴근하기"]
+      ]]
+    ]
   };
-  row.append(info,b);root.appendChild(row);
- });
-}
 
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+  const $=id=>document.getElementById(id);
+  function localToday(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+  $("date").value=localToday();
 
-async function exportCSV(){
- if(!window.supabaseClient){setStatus("Supabase 설정이 필요합니다.");return}
- const { data: rs, error } = await window.supabaseClient.from('gym_checklist_records').select('*');
- if(error || !rs || !rs.length){setStatus("내
+  function render(){
+    const root=$("checklist");
+    root.innerHTML="";
+    
+    const currentShift = $("shift").value || "오픈";
+    const shiftSections = checklistData[currentShift] || checklistData["오픈"];
+
+    shiftSections.forEach((sec, si)=>{
+      const d=document.createElement("details");
+      d.className="section";
+      d.open=true;
+      
+      const sum=document.createElement("summary");
+      sum.textContent=sec[0]+" · 0/"+sec[1].length;
+      d.appendChild(sum);
+      
+      const items=document.createElement("div");
+      items.className="items";
+      
+      sec[1].forEach((item, ii)=>{
+        const lab=document.createElement("label");
+        lab.className="item";
+        const cb=document.createElement("input");
+        cb.type="checkbox";
+        cb.dataset.id=si+"-"+ii;
+        const span=document.createElement("span");
+        span.textContent=item[0];
+        
+        cb.addEventListener("change",()=>{
+          lab.classList.toggle("done",cb.checked);
+          progress();
+        });
+        
+        lab.append(cb,span);
+        items.appendChild(lab);
+      });
+      
+      d.appendChild(items);
+      root.appendChild(d);
+    });
+    
+    $("shiftPill").textContent=currentShift+" 근무";
+    progress();
+  }
+
+  function progress(){
+    const visible=[...document.querySelectorAll('#checklist input[type=checkbox]')];
+    const done=visible.filter(x=>x.checked).length;
+    const total=visible.length;
+    const pct=total?Math.round(done/total*100):0;
+
+    $("progressText").textContent=`현재 ${$("shift").value} 근무 · ${done} / ${total}개 완료 (${pct}%)`;
+    $("progressBar").style.width=pct+"%";
+    $("completionPercent").textContent=pct+"%";
+    
+    const complete=total>0&&done===total;
+    $("completion").classList.toggle("done",complete);
+    $("completionText").textContent=complete?"모든 체크리스트를 완료했습니다. 저장하기를 눌러 기록을 남겨주세요.":"현재 근무의 체크리스트 완료율";
+    
+    [...document.querySelectorAll("#checklist .section")].forEach((d,i)=>{
+      const boxes=[...d.querySelectorAll("input")];
+      const shiftSections = checklistData[$("shift").value] || checklistData["오픈"];
+      if(shiftSections[i]){
+        d.querySelector("summary").textContent=shiftSections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`;
+      }
+    });
+  }
+
+  function current(){
+    const checks={};
+    document.querySelectorAll('#checklist input').forEach(c=>checks[c.dataset.id]=c.checked);
+    return {employee:$("employee").value.trim(),work_date:$("date").value,shift:$("shift").value,notes:$("notes").value,checks,updated_at:new Date().toISOString()};
+  }
+
+  function setStatus(s){$("status").textContent=s}
+
+  async function save(){
+    if(!supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
+    const r=current();
+    if(!r.employee||!r.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}
+    setStatus("클라우드에 저장 중...");
+    const { error } = await supabaseClient.from('gym_checklist_records').insert([r]);
+    if(error){
+      console.error(error);
+      setStatus("저장 실패: " + error.message);
+    } else {
+      setStatus("클라우드 DB 저장 완료!");
+      searchRecords();
+    }
+  }
+
+  async function load(){
+    if(!supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
+    const emp = $("employee").value.trim();
+    const date = $("date").value;
+    const shift = $("shift").value;
+    if(!
