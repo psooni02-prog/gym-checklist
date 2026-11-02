@@ -72,13 +72,10 @@ main{max-width:940px;margin:auto;padding:18px;display:grid;gap:15px}.card{backgr
 
 <script>
 const SUPABASE_URL = "https://bwaskqdszrossgvizijq.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YXNrcWRzenJvc3Nndml6aWpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NjIwODUsImV4cCI6MjEwODIzODA4NX0.v4w4fD6x0kcSiFlLm92eIGgUdtUD0M_To2ooAygWqwg";
-let supabase = null;
-try {
-  if (window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-} catch(e) { console.error(e); }
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YXNrcWRzenJvc3Nndml6aWpxIക്കാരിQiOiJhbm9uIiwiaWF0IjoxNzkyNjYyMDg1LCJleHAiOjIxMDgyMzgwODV9.v4w4fD6x0kcSiFlLm92eIGgUdtUD0M_To2ooAygWqwg";
+
+// 중복 선언 방지를 위한 안전한 클라이언트 생성
+window.supabaseClient = window.supabaseClient || (window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 
 const checklistData = {
   "오픈": [
@@ -254,11 +251,11 @@ function current(){
 function setStatus(s){$("status").textContent=s}
 
 async function save(){
- if(!supabase){setStatus("Supabase 연결을 확인해주세요.");return}
+ if(!window.supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
  const r=current();
  if(!r.employee||!r.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}
  setStatus("클라우드에 저장 중...");
- const { error } = await supabase.from('gym_checklist_records').insert([r]);
+ const { error } = await window.supabaseClient.from('gym_checklist_records').insert([r]);
  if(error){
   console.error(error);
   setStatus("저장 실패: " + error.message);
@@ -269,13 +266,13 @@ async function save(){
 }
 
 async function load(){
- if(!supabase){setStatus("Supabase 연결을 확인해주세요.");return}
+ if(!window.supabaseClient){setStatus("Supabase 연결을 확인해주세요.");return}
  const emp = $("employee").value.trim();
  const date = $("date").value;
  const shift = $("shift").value;
  if(!emp || !date){setStatus("직원명과 날짜를 입력해주세요.");return}
  
- const { data, error } = await supabase.from('gym_checklist_records')
+ const { data, error } = await window.supabaseClient.from('gym_checklist_records')
    .select('*')
    .eq('employee', emp)
    .eq('work_date', date)
@@ -304,11 +301,11 @@ async function load(){
 }
 
 async function searchRecords(){
- if(!supabase) return;
+ if(!window.supabaseClient) return;
  const name=$("searchName").value.trim();
  const date=$("searchDate").value;
  
- let query = supabase.from('gym_checklist_records').select('*').order('work_date', { ascending: false });
+ let query = window.supabaseClient.from('gym_checklist_records').select('*').order('work_date', { ascending: false });
  if(name) query = query.ilike('employee', `%${name}%`);
  if(date) query = query.eq('work_date', date);
  
@@ -348,39 +345,6 @@ async function searchRecords(){
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 
 async function exportCSV(){
- if(!supabase){setStatus("Supabase 설정이 필요합니다.");return}
- const { data: rs, error } = await supabase.from('gym_checklist_records').select('*');
- if(error || !rs || !rs.length){setStatus("내보낼 기록이 없습니다.");return}
- 
- const rows=[["날짜","직원명","근무구분","특이사항","완료항목수"]];
- rs.forEach(r=>{
-  const done=r.checks?Object.values(r.checks).filter(Boolean).length:0;
-  rows.push([r.work_date,r.employee,r.shift,r.notes,done+"개"]);
- });
- 
- const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
- a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href);
-}
-
-$("save").onclick=save;
-$("load").onclick=load;
-$("csv").onclick=exportCSV;
-$("reset").onclick=()=>{
-  if(confirm("현재 체크만 초기화할까요?")){
-    document.querySelectorAll('#checklist input').forEach(c=>{
-      c.checked=false;
-      c.closest(".item").classList.remove("done");
-    });
-    progress();
-    setStatus("체크를 초기화했습니다.");
-  }
-};
-$("search").onclick=searchRecords;
-$("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
-$("shift").onchange=render;
-
-render();
-</script>
-</body>
-</html>
+ if(!window.supabaseClient){setStatus("Supabase 설정이 필요합니다.");return}
+ const { data: rs, error } = await window.supabaseClient.from('gym_checklist_records').select('*');
+ if(error || !rs || !rs.length){setStatus("내
