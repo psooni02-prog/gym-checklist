@@ -11,7 +11,7 @@
 header{background:linear-gradient(135deg,#111214,#292c31);color:#fff;padding:28px max(18px,calc((100% - 940px)/2));border-bottom:1px solid #383b40}h1{font-size:25px;letter-spacing:-.8px;margin:0 0 7px;font-weight:750}header p{margin:0;color:#c3c6cc;font-size:14px}
 main{max-width:940px;margin:auto;padding:18px;display:grid;gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:19px;box-shadow:0 3px 12px #17191d05}h2{font-size:17px;letter-spacing:-.4px;margin:0 0 15px;font-weight:750}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}label.field{font-size:12px;color:#656a73;display:grid;gap:7px;font-weight:650}input,select,textarea{font:inherit;padding:11px 12px;border:1px solid #d9dce1;border-radius:9px;width:100%;background:#fff;color:var(--ink);outline:none}input:focus,select:focus{border-color:#555b65;box-shadow:0 0 0 3px #24272d12}
 .progressText{font-size:13px;text-align:right;color:#4e535c;margin-top:16px;font-weight:700}.progress{height:9px;background:var(--track);border-radius:20px;overflow:hidden;margin-top:8px}.progress div{height:100%;width:0;background:linear-gradient(90deg,#24272d,#62666f);border-radius:20px;transition:width .2s}.completion{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:11px 13px;background:#f5f6f7;border:1px solid #e6e7ea;border-radius:10px;font-size:13px;color:#555a63}.completion strong{font-size:15px;color:#17191d}.completion.done{background:#eceef0;border-color:#cfd2d7}.completion .percent{font-size:22px;font-weight:800;letter-spacing:-.8px;color:#17191d}
-.section{border:1px solid var(--line);border-radius:11px;margin:10px 0;overflow:hidden;background:#fff}.section.is-hidden{display:none !important}.section summary{font-weight:750;font-size:14px;padding:14px;cursor:pointer;background:#f7f8f9;list-style-position:inside}.items{padding:0 14px}.item{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-top:1px solid #eef0f2;font-size:14px;line-height:1.5;cursor:pointer}.item input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:#25282e;cursor:pointer}.item small{display:block;color:#777c85;margin-top:4px;font-size:12px}.item.done span{text-decoration:line-through;color:#8b9098}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #dfe1e5;border-radius:9px;padding:10px 13px;font-weight:700;font-size:13px;cursor:pointer;background:#f1f2f4;color:#24272d;transition:background .15s}.btn:hover{background:#e4e6e9}.btn.primary{background:#202329;color:#fff;border-color:#202329}.btn.primary:hover{background:#373a41}.status{font-size:13px;color:#666b74;margin-top:10px;line-height:1.5}.record{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:10px;margin:8px 0;align-items:center}.record small{display:block;color:#777c85;margin-top:5px}.shift-pill{display:inline-block;margin-top:14px;padding:5px 9px;background:#383b41;color:#fff;border-radius:6px;font-size:11px;font-weight:750;letter-spacing:.5px}
+.section{border:1px solid var(--line);border-radius:11px;margin:10px 0;overflow:hidden;background:#fff}.section summary{font-weight:750;font-size:14px;padding:14px;cursor:pointer;background:#f7f8f9;list-style-position:inside}.items{padding:0 14px}.item{display:flex;gap:11px;align-items:flex-start;padding:13px 0;border-top:1px solid #eef0f2;font-size:14px;line-height:1.5;cursor:pointer}.item input{width:19px;height:19px;flex:none;margin:1px 0 0;accent-color:#25282e;cursor:pointer}.item small{display:block;color:#777c85;margin-top:4px;font-size:12px}.item.done span{text-decoration:line-through;color:#8b9098}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:1px solid #dfe1e5;border-radius:9px;padding:10px 13px;font-weight:700;font-size:13px;cursor:pointer;background:#f1f2f4;color:#24272d;transition:background .15s}.btn:hover{background:#e4e6e9}.btn.primary{background:#202329;color:#fff;border-color:#202329}.btn.primary:hover{background:#373a41}.status{font-size:13px;color:#666b74;margin-top:10px;line-height:1.5}.record{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;justify-content:space-between;gap:10px;margin:8px 0;align-items:center}.record small{display:block;color:#777c85;margin-top:5px}.shift-pill{display:inline-block;margin-top:14px;padding:5px 9px;background:#383b41;color:#fff;border-radius:6px;font-size:11px;font-weight:750;letter-spacing:.5px}
 @media(max-width:580px){.fields{grid-template-columns:1fr}main{padding:10px}.card{padding:15px}.record{align-items:flex-start}header{padding-top:23px;padding-bottom:23px}h1{font-size:22px}}
 </style>
 </head>
@@ -75,12 +75,11 @@ const SUPABASE_URL = "https://bwaskqdszrossgvizijq.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ3YXNrcWRzenJvc3Nndml6aWpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI2NjIwODUsImV4cCI6MjEwODIzODA4NX0.v4w4fD6x0kcSiFlLm92eIGgUdtUD0M_To2ooAygWqwg";
 let supabase = null;
 try {
-  if (SUPABASE_URL !== "YOUR_SUPABASE_URL" && window.supabase) {
+  if (window.supabase) {
     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 } catch(e) { console.error(e); }
 
-// 요청하신 전체 체크리스트 항목 (오픈 / 미들 / 마감 분류)
 const checklistData = {
   "오픈": [
     ["출근 직후 업무", [
@@ -99,9 +98,9 @@ const checklistData = {
       ["[탈의실 및 운동용품] 정수기 옆 케틀벨 및 덤벨 정리하기"],
       ["[탈의실 및 운동용품] 3kg 덤벨 위치 확인 및 정리하기"],
       ["[탈의실 및 운동용품] 폼롤러 및 운동 매트 제자리에 정리하기"],
-      ["[걸레 청소] 정문 및 후문 신발장 닦기 (걸레 위치: 회장실 창고 오른쪽 벽 옷걸이)"],
+      ["[걸레 청소] 정문 및 후문 신발장 닦기"],
       ["[걸레 청소] 남녀 가방 보관함 닦기"],
-      ["[걸레 청소] 런닝머신 상단 및 하단 닦기 (버튼 주변 하단부 및 벨트 양옆 발판까지)"],
+      ["[걸레 청소] 런닝머신 상단 및 하단 닦기"],
       ["[걸레 청소] 런닝머신 젖은 걸레로 닦은 후 마른 수건으로 마무리하기"],
       ["[걸레 청소] 천국의 계단 전체적으로 닦기"],
       ["[바닥 정리] 바닥에 보이는 쓰레기 줍기"],
@@ -134,14 +133,14 @@ const checklistData = {
       ["세척 후 깨끗한 물로 충분히 헹구기"],
       ["화장실 거울 깨끗하게 닦기"],
       ["바닥 빗자루로 쓸기"],
-      ["바닥은 세제를 이용해 물청소까지 진행하기 (오픈 시 완료한 경우 상태만 확인)"],
+      ["바닥은 세제를 이용해 물청소까지 진행하기"],
       ["쓰레기통 비우기"],
       ["청소기 및 쓰레기통 제자리 정리하기"]
     ]],
     ["헬스장 내부 청소 및 정리", [
       ["기구 및 머신 전체적으로 닦기"],
       ["원판과 덤벨 제자리에 정리하기"],
-      ["청소기로 바닥 전체 청소하기 (청소기 위치: 화장실)"],
+      ["청소기로 바닥 전체 청소하기"],
       ["정수기 및 주변 청소하기"],
       ["정수기 물통 비우기"],
       ["쓰레기통 확인 후 비우기"],
@@ -159,17 +158,17 @@ const checklistData = {
       ["샤워실 전체 청소 상태 확인하기"]
     ]],
     ["퇴근 전 마감 업무", [
-      ["[바닥 및 세탁물] 청소기로 센터 바닥 전체 청소하기"],
-      ["[바닥 및 세탁물] 옷 및 수건 등 세탁물 보라색 포대에 담기"],
-      ["[바닥 및 세탁물] 샤워실 앞 물기 제거 발판 교체하기 (매주 월요일 / 목요일)"],
-      ["[시설 및 환경] 음악 소리 7~9%로 조절하기 (완전히 끄지 말 것)"],
-      ["[시설 및 환경] 센터 전체 청소 상태 최종 점검하기"],
-      ["[시설 및 환경] 환풍기 켜지 않기"],
-      ["[시설 및 환경] 화장실 포함 각 구역별 조명 소등하기"],
-      ["[시설 및 환경] 정문 출입문 시건하기 (탈의실/화장실 문은 시건 금지)"],
-      ["[대표님 최종 보고] 각 구역별 청소 완료 사진 촬영하기"],
-      ["[대표님 최종 보고] 청소 상태 및 특이사항 대표님께 보고하기"],
-      ["[대표님 최종 보고] 모든 업무 완료 후 퇴근하기"]
+      ["청소기로 센터 바닥 전체 청소하기"],
+      ["옷 및 수건 등 세탁물 보라색 포대에 담기"],
+      ["샤워실 앞 물기 제거 발판 교체하기"],
+      ["음악 소리 7~9%로 조절하기"],
+      ["센터 전체 청소 상태 최종 점검하기"],
+      ["환풍기 켜지 않기"],
+      ["화장실 포함 각 구역별 조명 소등하기"],
+      ["정문 출입문 시건하기"],
+      ["각 구역별 청소 완료 사진 촬영하기"],
+      ["청소 상태 및 특이사항 대표님께 보고하기"],
+      ["모든 업무 완료 후 퇴근하기"]
     ]]
   ]
 };
@@ -182,8 +181,8 @@ function render(){
  const root=$("checklist");
  root.innerHTML="";
  
- const currentShift = $("shift").value;
- const shiftSections = checklistData[currentShift] || [];
+ const currentShift = $("shift").value || "오픈";
+ const shiftSections = checklistData[currentShift] || checklistData["오픈"];
 
  shiftSections.forEach((sec, si)=>{
   const d=document.createElement("details");
@@ -231,7 +230,7 @@ function progress(){
 
  $("progressText").textContent=`현재 ${$("shift").value} 근무 · ${done} / ${total}개 완료 (${pct}%)`;
  $("progressBar").style.width=pct+"%";
- $("completionPercent").textContent=pct+"% - ";
+ $("completionPercent").textContent=pct+"%";
  
  const complete=total>0&&done===total;
  $("completion").classList.toggle("done",complete);
@@ -239,7 +238,7 @@ function progress(){
  
  [...document.querySelectorAll("#checklist .section")].forEach((d,i)=>{
   const boxes=[...d.querySelectorAll("input")];
-  const shiftSections = checklistData[$("shift").value] || [];
+  const shiftSections = checklistData[$("shift").value] || checklistData["오픈"];
   if(shiftSections[i]){
    d.querySelector("summary").textContent=shiftSections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`;
   }
@@ -255,7 +254,7 @@ function current(){
 function setStatus(s){$("status").textContent=s}
 
 async function save(){
- if(!supabase){setStatus("Supabase 설정(URL, KEY)을 코드 상단에 입력해주세요.");return}
+ if(!supabase){setStatus("Supabase 연결을 확인해주세요.");return}
  const r=current();
  if(!r.employee||!r.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}
  setStatus("클라우드에 저장 중...");
@@ -270,7 +269,7 @@ async function save(){
 }
 
 async function load(){
- if(!supabase){setStatus("Supabase 설정이 필요합니다.");return}
+ if(!supabase){setStatus("Supabase 연결을 확인해주세요.");return}
  const emp = $("employee").value.trim();
  const date = $("date").value;
  const shift = $("shift").value;
@@ -381,7 +380,6 @@ $("search").onclick=searchRecords;
 $("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
 $("shift").onchange=render;
 
-// 초기 렌더링 실행
 render();
 </script>
 </body>
